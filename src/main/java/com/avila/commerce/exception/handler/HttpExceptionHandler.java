@@ -33,6 +33,7 @@ public class HttpExceptionHandler {
                                 e.getHttpInputMessage(),
                                 new Product.ProductRequestDTO(
                                         "Product Name",
+                                        "Product Category",
                                         "Product Description",
                                         500.0,
                                         10

@@ -9,12 +9,14 @@ public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String category;
     private String description;
     private Double price;
     private Integer stock;
 
     public record ProductRequestDTO(
             String name,
+            String category,
             String description,
             Double price,
             Integer stock
@@ -24,6 +26,7 @@ public class Product {
         public String toString() {
             return "ProductRequestDTO{" +
                     "name='" + name + '\'' +
+                    ", category='" + category + '\'' +
                     ", description='" + description + '\'' +
                     ", price=" + price +
                     ", stock=" + stock +
@@ -42,11 +45,12 @@ public class Product {
 
     public record ProductResponseDTO(
             String name,
+            String category,
             String description,
             Double price
     ) {
         public ProductResponseDTO(@NotNull Product product) {
-            this(product.name, product.description, product.price);
+            this(product.name, product.category, product.description, product.price);
         }
     }
 }
