@@ -19,6 +19,17 @@ public class Product {
             Double price,
             Integer stock
     ) {
+
+        @Override
+        public String toString() {
+            return "ProductRequestDTO{" +
+                    "name='" + name + '\'' +
+                    ", description='" + description + '\'' +
+                    ", price=" + price +
+                    ", stock=" + stock +
+                    '}';
+        }
+
         public @NotNull Product toEntity() {
             Product product = new Product();
             product.name = name;
