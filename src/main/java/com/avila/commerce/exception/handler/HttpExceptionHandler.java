@@ -50,13 +50,15 @@ public class HttpExceptionHandler {
     ){
         @Override @Contract(pure = true)
         public @NotNull String toString() {
-            return "InvalidProductRequestMessage {" +
+            return "InvalidProductRequestMessage" +
+                    "{" +
                     "Status: " + status +
                     ", Reason: '" + reason + '\'' +
                     "\n" +
                     ", Invalid request: \n" + input + '\'' +
                     ", Expected request: \n" + model +
-                    "\n}";
+                    "\n" +
+                    "}";
         }
     }
 }
