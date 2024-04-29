@@ -13,8 +13,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @ControllerAdvice
 public class HttpExceptionHandler {
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    @PostMapping("/commerce/product")
+    public record InvalidProductRequestMessage(
+            HttpStatus status,
+            String reason,
+            HttpInputMessage input,
+            Product.ProductRequestDTO model
+    ){
+        @Override @Contract(pure = true)
+        public @NotNull String toString() {
+            return "InvalidProductRequestMessage" +
+                    "{" +
+                    "Status: " + status +
+                    ", Reason: '" + reason + '\'' +
+                    "\n" +
+                    ", Invalid request: \n" + input + '\'' +
+                    ", Expected request: \n" + model +
+                    "\n" +
+                    "}";
+        }
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class) @PostMapping("/commerce/product")
     public ResponseEntity<InvalidProductRequestMessage> handleHttpMessageNotReadableException(@NotNull HttpMessageNotReadableException e) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         HttpHeaders headers = new HttpHeaders();
@@ -40,25 +59,5 @@ public class HttpExceptionHandler {
                                 )
                         )
                 );
-    }
-
-    public record InvalidProductRequestMessage(
-            HttpStatus status,
-            String reason,
-            HttpInputMessage input,
-            Product.ProductRequestDTO model
-    ){
-        @Override @Contract(pure = true)
-        public @NotNull String toString() {
-            return "InvalidProductRequestMessage" +
-                    "{" +
-                    "Status: " + status +
-                    ", Reason: '" + reason + '\'' +
-                    "\n" +
-                    ", Invalid request: \n" + input + '\'' +
-                    ", Expected request: \n" + model +
-                    "\n" +
-                    "}";
-        }
     }
 }
