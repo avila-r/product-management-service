@@ -36,6 +36,7 @@ public class Product {
         public @NotNull Product toEntity() {
             Product product = new Product();
             product.name = name;
+            product.category = category;
             product.description = description;
             product.price = price;
             product.stock = stock;
