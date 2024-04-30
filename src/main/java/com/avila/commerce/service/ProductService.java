@@ -24,12 +24,6 @@ public class ProductService implements ProductContract {
     }
 
     @Override
-    public Product getProduct(@NotNull Product product) {
-        return productRepository.findById(product.getId())
-                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-    }
-
-    @Override
     public Product updateProduct(@NotNull Product product) {
         return productRepository.save(product);
     }

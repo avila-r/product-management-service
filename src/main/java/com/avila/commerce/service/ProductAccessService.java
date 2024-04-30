@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductAccessService implements ProductAccessContract {
     @Override
-    public Product convertRequestToProduct(Product.@NotNull ProductRequestDTO productRequestDTO) {
+    public @NotNull Product convertRequestToProduct(Product.@NotNull ProductRequestDTO productRequestDTO) {
         return productRequestDTO.toEntity();
     }
 
