@@ -25,13 +25,22 @@ public class ProductService implements ProductContract {
 
     @Override
     public Product updateProduct(@NotNull Product product) {
-        return productRepository.save(product);
+        if (productRepository.existsByName(product.getName())){
+            productRepository.delete(
+                    productRepository.findByName(product.getName())
+                            .orElseThrow(() -> new ProductNotFoundException("Product not found")));
+            return productRepository.save(product);
+        }
+        throw new ProductNotFoundException("Product not found");
     }
 
     @Override
     public ResponseEntity<String> deleteProduct(@NotNull Product product) {
-        if (productRepository.existsById(product.getId())) {
-            productRepository.delete(product);
+        if (productRepository.existsByName(product.getName())) {
+            productRepository.delete(
+                    productRepository.findByName(product.getName())
+                            .orElseThrow(() -> new ProductNotFoundException("Product not found"))
+            );
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body("Product deleted successfully: " + product);
