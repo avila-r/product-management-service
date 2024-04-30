@@ -1,4 +1,6 @@
 package com.avila.commerce.security.config;
+import com.avila.commerce.security.filter.HttpSecurityFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -7,9 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration @EnableWebSecurity
+@AllArgsConstructor
 public class HttpSecurityConfig {
+    private final HttpSecurityFilter httpSecurityFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -24,6 +29,7 @@ public class HttpSecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/commerce/auth/**").permitAll()
                 )
+                .addFilterBefore(httpSecurityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
