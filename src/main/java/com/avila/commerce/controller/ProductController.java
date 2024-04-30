@@ -13,7 +13,7 @@ public class ProductController {
     private final ProductAccessService productAccessService;
     private final ProductService productService;
 
-    @PostMapping
+    @PostMapping("/insert")
     public ResponseEntity<Product.ProductResponseDTO> saveProduct(@RequestBody Product.ProductRequestDTO productRequestDTO) {
         return ResponseEntity.ok(
                 productAccessService.convertProductToResponse(
@@ -45,7 +45,7 @@ public class ProductController {
         );
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Product.ProductResponseDTO> getByIdEndpoint(@PathVariable Long id){
         return ResponseEntity.ok(
                 productAccessService.convertProductToResponse(productService.getProductById(id))
