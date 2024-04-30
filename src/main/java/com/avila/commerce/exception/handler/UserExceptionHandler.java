@@ -1,5 +1,6 @@
 package com.avila.commerce.exception.handler;
 import com.avila.commerce.exception.user.InvalidTokenGenerationException;
+import com.avila.commerce.exception.user.InvalidTokenSubmitException;
 import com.avila.commerce.exception.user.UsernameAlreadyExistsException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
@@ -48,6 +49,26 @@ public class UserExceptionHandler {
                         new UserExceptionMessage(
                                 status,
                                 "Token generation failed. Please try again."
+                        )
+                );
+    }
+
+    @ExceptionHandler(InvalidTokenSubmitException.class)
+    ResponseEntity<UserExceptionMessage> handleInvalidTokenSubmitException(@NotNull InvalidTokenSubmitException e) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("X-Status-Reason", e.getMessage());
+        headers.add("X-Status-Error", "Unauthorized");
+        headers.add("X-Status-Exception", e.getClass().getName());
+        headers.add("X-Status-Message", "Token submission failed");
+        return ResponseEntity
+                .status(status)
+                .headers(headers)
+                .body(
+                        new UserExceptionMessage(
+                                status,
+                                "Token submission failed. Please try again with a valid token."
                         )
                 );
     }
