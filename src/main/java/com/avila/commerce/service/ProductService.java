@@ -14,6 +14,7 @@ import java.util.List;
 @Service @AllArgsConstructor
 public class ProductService implements ProductContract {
     private final ProductRepository productRepository;
+    private final ProductAccessService productAccessService;
 
     @Override
     public Product saveProduct(@NotNull Product product) {
@@ -43,7 +44,7 @@ public class ProductService implements ProductContract {
             );
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body("Product deleted successfully: " + product);
+                    .body("Product deleted successfully: " + productAccessService.convertProductToResponse(product));
         }
         throw new ProductNotFoundException("Product not found");
     }
