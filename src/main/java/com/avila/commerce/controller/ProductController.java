@@ -22,12 +22,12 @@ public class ProductController {
         );
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteProduct(@RequestBody Product.ProductRequestDTO productRequestDTO){
         return productService.deleteProduct(productAccessService.convertRequestToProduct(productRequestDTO));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<Product.ProductResponseDTO> updateProduct(@RequestBody Product.ProductRequestDTO productRequestDTO){
         return ResponseEntity.ok(
                 productAccessService.convertProductToResponse(
