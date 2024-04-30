@@ -1,8 +1,8 @@
 package com.avila.commerce.security.controller;
-import com.avila.commerce.security.model.Login;
-import com.avila.commerce.security.model.Registration;
 import com.avila.commerce.security.model.User;
+import com.avila.commerce.security.role.UserRole;
 import com.avila.commerce.security.service.UserService;
+import com.avila.commerce.security.token.TokenService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
+    private final TokenService tokenService;
+
+    public record Login(String login, String password) { }
+    public record LoginResponseMessage(String token, Authentication authentication) { }
+    public record Registration(UserRole role, String login, String password) { }
 
     @PostMapping("/login")
-    public ResponseEntity<Authentication> login(@RequestBody @Valid Login login) {
+    public ResponseEntity<LoginResponseMessage> login(@RequestBody @Valid Login login) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(login.login(), login.password())
+        );
         return ResponseEntity.ok(
-                authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                login.login(),
-                                login.password()
-                        )
+                new LoginResponseMessage(
+                        tokenService.generate(
+                            (User) authentication.getPrincipal()), authentication
                 )
         );
     }
