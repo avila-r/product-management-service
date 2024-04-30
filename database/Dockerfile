@@ -1,4 +1,4 @@
-FROM postgres:16.2
+FROM postgres:16.1
 
 ENV POSTGRES_DB commerce_db
 ENV POSTGRES_USER postgres
