@@ -1,4 +1,5 @@
 package com.avila.commerce.exception.handler;
+import com.avila.commerce.exception.user.InvalidTokenGenerationException;
 import com.avila.commerce.exception.user.UsernameAlreadyExistsException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,26 @@ public class UserExceptionHandler {
                         new UserExceptionMessage(
                                 status,
                                 "Username already exists in use and cannot be created. It must be unique."
+                        )
+                );
+    }
+
+    @ExceptionHandler(InvalidTokenGenerationException.class)
+    ResponseEntity<UserExceptionMessage> handleInvalidTokenGenerationException(@NotNull InvalidTokenGenerationException e) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        headers.add("X-Status-Reason", e.getMessage());
+        headers.add("X-Status-Error", "Internal Server Error");
+        headers.add("X-Status-Exception", e.getClass().getName());
+        headers.add("X-Status-Message", "Token generation failed");
+        return ResponseEntity
+                .status(status)
+                .headers(headers)
+                .body(
+                        new UserExceptionMessage(
+                                status,
+                                "Token generation failed. Please try again."
                         )
                 );
     }
