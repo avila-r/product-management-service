@@ -1,1 +1,19 @@
- 
+version: '3.8'
+
+services:
+  db:
+    build: ./database
+    container_name: commerce-database
+    ports:
+      - '5432:5432'
+  commerce:
+    build: .
+    container_name: commerce
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/commerce_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+    ports:
+      - '8080:8080'
